@@ -4,8 +4,10 @@
  *
  * Lists the org's public repos (excluding forks, archived repos, and this
  * profile repo) and rewrites the table between the projects:start and
- * projects:end markers. Per-repo description overrides can be set in
- * profile/projects.json; otherwise the repo's GitHub description is used.
+ * projects:end markers. profile/projects.json holds an "include" list that
+ * forces a repo into the table (e.g. a fork that is our own project) and
+ * "overrides" for custom description cells; otherwise the repo's GitHub
+ * description is used.
  *
  * Run locally with: node scripts/generate-profile.mjs
  */
@@ -40,19 +42,21 @@ async function listPublicRepos() {
   }
 }
 
-function loadOverrides() {
+function loadConfig() {
   try {
-    return JSON.parse(readFileSync(overridesPath, "utf8")).overrides ?? {};
+    const parsed = JSON.parse(readFileSync(overridesPath, "utf8"));
+    return { include: parsed.include ?? [], overrides: parsed.overrides ?? {} };
   } catch {
-    return {};
+    return { include: [], overrides: {} };
   }
 }
 
-const repos = (await listPublicRepos())
-  .filter((r) => !r.fork && !r.archived && r.name !== PROFILE_REPO)
-  .sort((a, b) => a.name.localeCompare(b.name));
+const { include, overrides } = loadConfig();
+const included = new Set(include);
 
-const overrides = loadOverrides();
+const repos = (await listPublicRepos())
+  .filter((r) => !r.archived && r.name !== PROFILE_REPO && (!r.fork || included.has(r.name)))
+  .sort((a, b) => a.name.localeCompare(b.name));
 const rows = repos.map((r) => {
   const desc = (overrides[r.name] ?? r.description ?? "").replace(/\|/g, "\\|");
   return `| [${r.name}](${r.html_url}) | ${desc} |`;

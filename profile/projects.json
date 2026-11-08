@@ -1,5 +1,8 @@
 {
-  "//": "Optional per-repo overrides for the Projects table description cell. The generator uses the repo's GitHub description unless an override is set here.",
+  "//": "include: repo names forced into the Projects table even when a filter would drop them (e.g. forks that are our own projects). overrides: custom text for the description cell; without one the repo's GitHub description is used.",
+  "include": [
+    "otterin"
+  ],
   "overrides": {
     "airport-timezone": "IATA airport code to IANA timezone lookup, zero dependencies",
     "touring-visa-rules": "Visa and work-permit rules for touring artists and crew, 58 destinations, official sources - powers the free [visa checker](https://www.tourpro.app/tools/visa-checker)"

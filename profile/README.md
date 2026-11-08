@@ -16,5 +16,6 @@ This org hosts small open-source utilities extracted from the TourPro codebase. 
 | Repo | What it is |
 | --- | --- |
 | [airport-timezone](https://github.com/tourproapp/airport-timezone) | IATA airport code to IANA timezone lookup, zero dependencies |
+| [otterin](https://github.com/tourproapp/otterin) | Unofficial mobile client for Devin - start, follow, and steer local coding sessions from your phone |
 | [touring-visa-rules](https://github.com/tourproapp/touring-visa-rules) | Visa and work-permit rules for touring artists and crew, 58 destinations, official sources - powers the free [visa checker](https://www.tourpro.app/tools/visa-checker) |
 <!-- projects:end -->
